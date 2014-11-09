@@ -29,21 +29,23 @@ angular.module('goFlexGet', ['ngRoute'])
 
 .controller('ConfigCtrl', ['$scope', '$http', '$sce', function($scope, $http, $sce) {
     $http.get('/api/config').
-    success(function(data, status, headers, config) {
+    success(function(data) {
         $scope.flexgetConfig = data;
     }).
-    error(function(data, status, headers, config) {
-        $scope.retrieveError = $sce.trustAsHtml('<strong>Unable to retrieve FlexGet configuration:</strong> ' + data);
+    error(function(data, status) {
+        var data = data || "Request failed";
+        $scope.retrieveError = $sce.trustAsHtml('<strong>Unable to retrieve FlexGet configuration:</strong> ' + data + ' (' + status + ')');
     });
 }])
 
 .controller('LogsCtrl', ['$scope', '$http', '$sce', function($scope, $http, $sce) {
     $http.get('/api/logs').
-    success(function(data, status, headers, config) {
+    success(function(data) {
         $scope.flexgetLogs = data;
         $('#logs').animate({'scrollTop': $('#logs')[0].scrollHeight}, 100);
     }).
-    error(function(data, status, headers, config) {
-        $scope.retrieveError = $sce.trustAsHtml('<strong>Unable to retrieve FlexGet logs:</strong> ' + data);
+    error(function(data, status) {
+        var data = data || "Request failed";
+        $scope.retrieveError = $sce.trustAsHtml('<strong>Unable to retrieve FlexGet logs:</strong> ' + data + ' (' + status + ')');
     });
 }]);
