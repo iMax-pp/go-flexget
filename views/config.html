@@ -1,6 +1,10 @@
-<pre id="config" class="prettyprint lang-yaml" ng-hide="retrieveError">
+<pre id="config" class="prettyprint" ng-hide="configError||configLoading">
 {{flexgetConfig}}
 </pre>
-<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
-<div class="alert alert-danger" role="alert" ng-show="retrieveError" ng-bind-html="retrieveError">
+<div class="progress" ng-show="configLoading">
+	<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100"
+		aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+	</div>
+</div>
+<div class="alert alert-danger" role="alert" ng-show="configError" ng-bind-html="configError">
 </div>

@@ -5,6 +5,7 @@ package main
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"golang.org/x/crypto/ssh"
 	"io/ioutil"
 	"os"
@@ -55,6 +56,7 @@ func ExecSSHCmd(cmd string) (string, error) {
 func getPrivateKey() ssh.Signer {
 	keyFile, err := os.Open(props["flexget.ssh.privatekey"])
 	if err != nil {
+		fmt.Println(err)
 		logger.Fatal(err)
 	}
 	defer keyFile.Close()
