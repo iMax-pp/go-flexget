@@ -8,6 +8,7 @@ import (
 	cache "github.com/robfig/go-cache"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -32,6 +33,7 @@ func main() {
 	http.Handle("/", http.FileServer(http.Dir("views")))
 	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
 	// Serve dynamic content
+	http.Handle("/api/status", http.HandlerFunc(StatusHandler))
 	http.Handle("/api/logs", http.HandlerFunc(LogsHandler))
 	http.Handle("/api/config", http.HandlerFunc(ConfigHandler))
 
@@ -40,6 +42,23 @@ func main() {
 	if err != nil {
 		logger.Fatal("ListenAndServe:", err)
 	}
+}
+
+// Command to retrieve FlexGet
+var getStatusCmd = "ps | grep flexget | grep -v grep"
+
+// '/api/status' request handler.
+func StatusHandler(w http.ResponseWriter, req *http.Request) {
+	logger.TraceBegin("StatusHandler")
+
+	body, err := ExecSSHCmd(getStatusCmd)
+	if err != nil && !strings.Contains(err.Error(), "Process exited with: 1") {
+		http.Error(w, err.Error(), 500)
+	}
+	status := body != ""
+
+	fmt.Fprint(w, status)
+	logger.TraceEnd("StatusHandler")
 }
 
 // Command to retrieve FlexGet logs (only keep 100 last lines)

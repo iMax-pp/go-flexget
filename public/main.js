@@ -26,52 +26,20 @@ angular.module('goFlexGet', ['ngRoute'])
     }
 ])
 
-.controller('MainCtrl', ['$scope',
-    function($scope) {}
-])
-
-.controller('ConfigCtrl', ['$scope', '$http', '$sce', '$timeout',
-    function($scope, $http, $sce, $timeout) {
-        $scope.configLoading = true
-        $http.get('/api/config')
+.controller('MainCtrl', ['$scope', '$http',
+    function($scope, $http) {
+        $scope.statusLoading = true;
+        $http.get('/api/status')
             .success(function(data) {
-                $scope.configLoading = false
-                $scope.flexgetConfig = data;
-                // Wait for template before applying prettify
-                $timeout(function() {
-                    prettyPrint();
-                });
+                $scope.statusLoading = false;
+                $scope.statusOk = data;
             })
             .error(function(data, status) {
-                $scope.configLoading = false
+                $scope.statusLoading = false;
                 var data = data || "Request failed";
                 $scope.configError = $sce.trustAsHtml(
-                    '<strong>Unable to retrieve FlexGet configuration:</strong> ' + data +
+                    '<strong>Unable to retrieve FlexGet status:</strong> ' + data +
                     ' (' + status + ')');
-            });
-    }
-])
-
-.controller('LogsCtrl', ['$scope', '$http', '$sce', '$timeout',
-    function($scope, $http, $sce, $timeout) {
-        $scope.logsLoading = true
-        $http.get('/api/logs')
-            .success(function(data) {
-                $scope.logsLoading = false
-                $scope.flexgetLogs = data;
-                // Wait for template before scrolling to bottom
-                $timeout(function() {
-                    $('#logs').animate({
-                        'scrollTop': $('#logs')[0].scrollHeight
-                    }, 100);
-                });
-            })
-            .error(function(data, status) {
-                $scope.logsLoading = false
-                var data = data || "Request failed";
-                $scope.logsError = $sce.trustAsHtml(
-                    '<strong>Unable to retrieve FlexGet logs:</strong> ' + data + ' (' +
-                    status + ')');
             });
     }
 ]);

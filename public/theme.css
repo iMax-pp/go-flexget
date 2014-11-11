@@ -6,3 +6,7 @@ body {
 pre#logs {
 	height: 37pc;
 }
+
+.spinner {
+	margin-left: 3pc;
+}
