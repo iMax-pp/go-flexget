@@ -3,8 +3,8 @@
 package main
 
 import (
+	"fmt"
 	utils "github.com/iMax-pp/go-utils"
-
 	"net/http"
 )
 
@@ -30,4 +30,30 @@ func main() {
 	if err != nil {
 		logger.Fatal("ListenAndServe:", err)
 	}
+}
+
+// Command to retrieve FlexGet logs (only keep 100 last lines)
+var getLogsCmd = "tail -100 .flexget/flexget.log"
+
+func LogsHandler(w http.ResponseWriter, req *http.Request) {
+	logger.TraceBegin("LogsHandler")
+	body, err := ExecSSHCmd(getLogsCmd)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+	}
+	fmt.Fprint(w, body)
+	logger.TraceEnd("LogsHandler")
+}
+
+// Command to retrieve FlexGet configuration
+var getConfigCmd = "cat .flexget/config.yml"
+
+func ConfigHandler(w http.ResponseWriter, req *http.Request) {
+	logger.TraceBegin("ConfigHandler")
+	body, err := ExecSSHCmd(getConfigCmd)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+	}
+	fmt.Fprint(w, body)
+	logger.TraceEnd("ConfigHandler")
 }

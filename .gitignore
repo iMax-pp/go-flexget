@@ -1,5 +1,3 @@
 .DS_Store
 *.log
-test/
 go-flexget
-go-flexget.zip
