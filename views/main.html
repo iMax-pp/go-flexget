@@ -1,10 +1,10 @@
-<div class="alert alert-success" role="alert" ng-show="fgStatus.Status&&!statusLoading">
+<div class="status alert alert-success" role="alert" ng-show="fgStatus.Status&&!statusLoading">
 	<strong>FlexGet is Running!</strong>
 </div>
-<div class="alert alert-danger" role="alert" ng-show="!fgStatus.Status&&!statusLoading">
+<div class="status alert alert-danger" role="alert" ng-show="!fgStatus.Status&&!statusLoading">
 	<strong>FlexGet is Stopped!</strong>
 </div>
-<div ng-hide="statusLoading">
+<div class="version" ng-hide="statusLoading">
 	<strong>FlexGet Version:</strong> {{fgStatus.Version}}
 </div>
 <i class="spinner fa fa-spinner fa-spin fa-3x" ng-show="statusLoading"></i>
