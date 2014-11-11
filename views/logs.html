@@ -1,6 +1,12 @@
+<div ng-hide="logsError">
 <pre id="logs" ng-hide="logsError||logsLoading">
 {{flexgetLogs}}
 </pre>
-<i class="spinner fa fa-spinner fa-spin fa-3x" ng-show="logsLoading"></i>
+	<button type="button" class="btn btn-default" title="Refresh Logs"
+	ng-click="getLogs()" ng-disabled="logsLoading" ng-hide="logsError">
+	<i class="fa fa-refresh" ng-hide="logsLoading"></i>
+	<i class="fa fa-refresh fa-spin" ng-show="logsLoading"></i>
+	</button>
+</div>
 <div class="alert alert-danger" role="alert" ng-show="logsError" ng-bind-html="logsError">
 </div>

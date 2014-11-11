@@ -1,10 +1,31 @@
-<div class="status alert alert-success" role="alert" ng-show="fgStatus.Status&&!statusLoading">
-	<strong>FlexGet is Running!</strong>
+<div class="col-md-4" ng-hide="statusError">
+	<div class="alert alert-success" role="alert" ng-show="fgStatus.Status&&!statusLoading">
+		<i class="fa fa-check"></i> <strong>FlexGet is Running!</strong>
+	</div>
+	<div class="alert alert-danger" role="alert" ng-show="!fgStatus.Status&&!statusLoading">
+		<i class="fa fa-remove"></i> <strong>FlexGet is Stopped!</strong>
+	</div>
+	<div ng-hide="statusLoading">
+		<strong>FlexGet Version:</strong> {{fgStatus.Version}}
+	</div>
+	<h3 ng-show="statusLoading">&hellip;</h3>
 </div>
-<div class="status alert alert-danger" role="alert" ng-show="!fgStatus.Status&&!statusLoading">
-	<strong>FlexGet is Stopped!</strong>
+<div class="col-md-2 btn-group" ng-hide="statusError">
+	<button type="button" class="btn btn-default" title="Refresh Status"
+	ng-click="getStatus()" ng-disabled="statusLoading">
+	<i class="fa fa-refresh" ng-hide="statusLoading"></i>
+	<i class="fa fa-refresh fa-spin" ng-show="statusLoading"></i>
+	</button>
+	<button type="button" class="btn btn-default" title="Start FlexGet" ng-click="startFlexGet()"
+	ng-disabled="isStarting||statusLoading||fgStatus.Status">
+	<i class="fa fa-play" ng-hide="isStarting"></i>
+	<i class="fa fa-spinner fa-spin" ng-show="isStarting"></i>
+	</button>
+	<button type="button" class="btn btn-default" title="Stop FlexGet" ng-click="stopFlexGet()"
+	ng-disabled="isStopping||statusLoading||!fgStatus.Status">
+	<i class="fa fa-stop" ng-hide="isStopping"></i>
+	<i class="fa fa-spinner fa-spin" ng-show="isStopping"></i>
+	</button>
 </div>
-<div class="version" ng-hide="statusLoading">
-	<strong>FlexGet Version:</strong> {{fgStatus.Version}}
+<div class="alert alert-danger" role="alert" ng-show="statusError" ng-bind-html="statusError">
 </div>
-<i class="spinner fa fa-spinner fa-spin fa-3x" ng-show="statusLoading"></i>

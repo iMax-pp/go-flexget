@@ -4,19 +4,9 @@ body {
 }
 
 pre#logs {
-	height: 37pc;
+	height: 35pc;
 }
 
 .spinner {
 	margin-left: 3pc;
-}
-
-.status {
-	width: 30%;
-	margin-right: 2pc;
-	display: inline-block;
-}
-
-.version {
-	display: inline-block;
 }
