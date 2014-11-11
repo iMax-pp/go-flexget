@@ -32,7 +32,7 @@ angular.module('goFlexGet', ['ngRoute'])
         $http.get('/api/status')
             .success(function(data) {
                 $scope.statusLoading = false;
-                $scope.statusOk = data;
+                $scope.fgStatus = data;
             })
             .error(function(data, status) {
                 $scope.statusLoading = false;
