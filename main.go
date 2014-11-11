@@ -5,11 +5,17 @@ package main
 import (
 	"fmt"
 	utils "github.com/iMax-pp/go-utils"
+	cache "github.com/robfig/go-cache"
 	"net/http"
+	"strconv"
+	"time"
 )
 
-var logger *utils.Logger
-var props map[string]string
+var (
+	logger  *utils.Logger
+	props   map[string]string
+	fgCache *cache.Cache
+)
 
 func main() {
 	// Init Logger
@@ -17,6 +23,10 @@ func main() {
 	defer logger.Close()
 	// Init Application properties
 	props, _ = utils.LoadConfig("application.properties")
+	// Init FlexGet Cache
+	expir, _ := strconv.Atoi(props["cache.expiration"])
+	clean, _ := strconv.Atoi(props["cache.cleanup"])
+	fgCache = cache.New(time.Duration(expir)*time.Second, time.Duration(clean)*time.Second)
 
 	// Serve static content
 	http.Handle("/", http.FileServer(http.Dir("views")))
@@ -35,12 +45,24 @@ func main() {
 // Command to retrieve FlexGet logs (only keep 100 last lines)
 var getLogsCmd = "tail -100 .flexget/flexget.log"
 
+// '/api/logs' request handler. Store FlexGet data in cache
 func LogsHandler(w http.ResponseWriter, req *http.Request) {
 	logger.TraceBegin("LogsHandler")
-	body, err := ExecSSHCmd(getLogsCmd)
-	if err != nil {
-		http.Error(w, err.Error(), 500)
+
+	var body string
+	data, exist := fgCache.Get("logs")
+	if exist {
+		logger.Debug("Retrieve FlexGet logs from cache")
+		body = data.(string)
+	} else {
+		logger.Debug("Retrieve FlexGet logs from server")
+		var err error
+		if body, err = ExecSSHCmd(getLogsCmd); err != nil {
+			http.Error(w, err.Error(), 500)
+		}
+		fgCache.Add("logs", body, 0)
 	}
+
 	fmt.Fprint(w, body)
 	logger.TraceEnd("LogsHandler")
 }
@@ -48,12 +70,24 @@ func LogsHandler(w http.ResponseWriter, req *http.Request) {
 // Command to retrieve FlexGet configuration
 var getConfigCmd = "cat .flexget/config.yml"
 
+// '/api/config' request handler. Store FlexGet data in cache
 func ConfigHandler(w http.ResponseWriter, req *http.Request) {
 	logger.TraceBegin("ConfigHandler")
-	body, err := ExecSSHCmd(getConfigCmd)
-	if err != nil {
-		http.Error(w, err.Error(), 500)
+
+	var body string
+	data, exist := fgCache.Get("config")
+	if exist {
+		logger.Debug("Retrieve FlexGet config from cache")
+		body = data.(string)
+	} else {
+		logger.Debug("Retrieve FlexGet config from server")
+		var err error
+		if body, err = ExecSSHCmd(getConfigCmd); err != nil {
+			http.Error(w, err.Error(), 500)
+		}
+		fgCache.Add("config", body, 0)
 	}
+
 	fmt.Fprint(w, body)
 	logger.TraceEnd("ConfigHandler")
 }
