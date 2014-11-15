@@ -15,12 +15,12 @@ import (
 func ExecSSHCmd(cmd string) (string, error) {
 	// Init SSH config with user and private key
 	config := &ssh.ClientConfig{
-		User: props["flexget.ssh.user"],
+		User: props[CONF_FG_SSH_USER],
 		Auth: []ssh.AuthMethod{ssh.PublicKeys(getPrivateKey())},
 	}
 
 	// Create a SSH client
-	client, err := ssh.Dial("tcp", props["flexget.ssh.server"], config)
+	client, err := ssh.Dial("tcp", props[CONF_FG_SSH_SERVER], config)
 	if err != nil {
 		newErr := errors.New("Failed to dial: " + err.Error())
 		logger.Error(newErr)
@@ -54,7 +54,7 @@ func ExecSSHCmd(cmd string) (string, error) {
 
 // Retrieve Signer (private key), from path defined in property "flexget.ssh.privatekey"
 func getPrivateKey() ssh.Signer {
-	keyFile, err := os.Open(props["flexget.ssh.privatekey"])
+	keyFile, err := os.Open(props[CONF_FG_SSH_PRIVKEY])
 	if err != nil {
 		fmt.Println(err)
 		logger.Fatal(err)

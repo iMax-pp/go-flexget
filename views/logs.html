@@ -1,9 +1,9 @@
 <div ng-hide="logsError">
-<pre id="logs" ng-hide="logsError||logsLoading">
+<pre id="logs" ng-hide="logsLoading">
 {{flexgetLogs}}
 </pre>
 	<button type="button" class="btn btn-default" title="Refresh Logs"
-	ng-click="getLogs()" ng-disabled="logsLoading" ng-hide="logsError">
+	ng-click="getLogs()" ng-disabled="logsLoading">
 	<i class="fa fa-refresh" ng-hide="logsLoading"></i>
 	<i class="fa fa-refresh fa-spin" ng-show="logsLoading"></i>
 	</button>

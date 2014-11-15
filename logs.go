@@ -8,14 +8,15 @@ import (
 )
 
 // Command to retrieve FlexGet logs (only keep 100 last lines)
-var getLogsCmd = "tail -100 .flexget/flexget.log"
+const getLogsCmd = "tail -100 .flexget/flexget.log"
+const CACHE_LOGS_KEY = "logs"
 
 // '/api/logs' request handler. Store FlexGet data in cache
 func LogsHandler(w http.ResponseWriter, req *http.Request) {
 	logger.TraceBegin("LogsHandler")
 
 	var body string
-	data, exist := fgCache.Get("logs")
+	data, exist := fgCache.Get(CACHE_LOGS_KEY)
 	if exist {
 		logger.Debug("Retrieve FlexGet logs from cache")
 		body = data.(string)
@@ -25,7 +26,7 @@ func LogsHandler(w http.ResponseWriter, req *http.Request) {
 		if body, err = ExecSSHCmd(getLogsCmd); err != nil {
 			http.Error(w, err.Error(), 500)
 		}
-		fgCache.Add("logs", body, 0)
+		fgCache.Add(CACHE_LOGS_KEY, body, 0)
 	}
 
 	fmt.Fprint(w, body)

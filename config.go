@@ -8,14 +8,15 @@ import (
 )
 
 // Command to retrieve FlexGet configuration
-var getConfigCmd = "cat .flexget/config.yml"
+const getConfigCmd = "cat .flexget/config.yml"
+const CACHE_CONFIG_KEY = "config"
 
 // '/api/config' request handler. Store FlexGet data in cache
 func ConfigHandler(w http.ResponseWriter, req *http.Request) {
 	logger.TraceBegin("ConfigHandler")
 
 	var body string
-	data, exist := fgCache.Get("config")
+	data, exist := fgCache.Get(CACHE_CONFIG_KEY)
 	if exist {
 		logger.Debug("Retrieve FlexGet config from cache")
 		body = data.(string)
@@ -25,7 +26,7 @@ func ConfigHandler(w http.ResponseWriter, req *http.Request) {
 		if body, err = ExecSSHCmd(getConfigCmd); err != nil {
 			http.Error(w, err.Error(), 500)
 		}
-		fgCache.Add("config", body, 0)
+		fgCache.Add(CACHE_CONFIG_KEY, body, 0)
 	}
 
 	fmt.Fprint(w, body)
