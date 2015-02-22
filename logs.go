@@ -1,9 +1,8 @@
-// Copyright (c) 2014 Maxime SIMON. All rights reserved.
+// Copyright (c) 2014-2015 Maxime SIMON. All rights reserved.
 
 package main
 
 import (
-	"fmt"
 	"net/http"
 )
 
@@ -12,23 +11,18 @@ const getLogsCmd = "tail -100 .flexget/flexget.log"
 const CACHE_LOGS_KEY = "logs"
 
 // '/api/logs' request handler. Store FlexGet data in cache
-func LogsHandler(w http.ResponseWriter, req *http.Request) {
-	logger.TraceBegin("LogsHandler")
-
-	var body string
+func LogsHandler() (int, string) {
 	data, exist := fgCache.Get(CACHE_LOGS_KEY)
 	if exist {
 		logger.Debug("Retrieve FlexGet logs from cache")
-		body = data.(string)
+		return http.StatusOK, data.(string)
 	} else {
 		logger.Debug("Retrieve FlexGet logs from server")
-		var err error
-		if body, err = ExecSSHCmd(getLogsCmd); err != nil {
-			http.Error(w, err.Error(), 500)
+		if body, err := ExecSSHCmd(getLogsCmd); err != nil {
+			return http.StatusInternalServerError, err.Error()
+		} else {
+			fgCache.Add(CACHE_LOGS_KEY, body, 0)
+			return http.StatusOK, body
 		}
-		fgCache.Add(CACHE_LOGS_KEY, body, 0)
 	}
-
-	fmt.Fprint(w, body)
-	logger.TraceEnd("LogsHandler")
 }

@@ -5,6 +5,7 @@ package main
 import (
 	"github.com/go-martini/martini"
 	utils "github.com/iMax-pp/go-utils"
+	"github.com/martini-contrib/render"
 	cache "github.com/robfig/go-cache"
 	"strconv"
 	"time"
@@ -42,7 +43,8 @@ func main() {
 
 	m := martini.Classic()
 	m.Use(martini.Logger())
-	// Serve dynamic content
+	m.Use(render.Renderer())
+
 	m.Get("/api/status", StatusHandler)
 	m.Get("/api/logs", LogsHandler)
 	m.Get("/api/config", ConfigHandler)

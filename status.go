@@ -1,10 +1,9 @@
-// Copyright (c) 2014 Maxime SIMON. All rights reserved.
+// Copyright (c) 2014-2015 Maxime SIMON. All rights reserved.
 
 package main
 
 import (
-	"encoding/json"
-	"fmt"
+	"github.com/martini-contrib/render"
 	"net/http"
 	"strings"
 )
@@ -21,25 +20,18 @@ var getStatusCmd = "ps | grep flexget | grep -v grep"
 var getVersionCmd = "cat /opt/local/bin/flexget | grep __requires__ | sed 's/__requires__ = .FlexGet==\\(.*\\)./\\1/'"
 
 // '/api/status' request handler.
-func StatusHandler(w http.ResponseWriter, req *http.Request) {
-	logger.TraceBegin("StatusHandler")
-
+func StatusHandler(r render.Render) {
 	status, err := getStatus()
 	if err != nil {
-		http.Error(w, err.Error(), 500)
+		r.Error(http.StatusInternalServerError)
+		return
 	}
 	version, err := getVersion()
 	if err != nil {
-		http.Error(w, err.Error(), 500)
+		r.Error(http.StatusInternalServerError)
+		return
 	}
-
-	body, err := json.Marshal(Status{status, version})
-	if err != nil {
-		http.Error(w, err.Error(), 500)
-	}
-
-	fmt.Fprint(w, string(body))
-	logger.TraceEnd("StatusHandler")
+	r.JSON(http.StatusOK, Status{status, version})
 }
 
 func getStatus() (bool, error) {
