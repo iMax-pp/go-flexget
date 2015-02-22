@@ -3,9 +3,9 @@
 package main
 
 import (
+	"github.com/go-martini/martini"
 	utils "github.com/iMax-pp/go-utils"
 	cache "github.com/robfig/go-cache"
-	"net/http"
 	"strconv"
 	"time"
 )
@@ -40,17 +40,14 @@ func main() {
 	clean, _ := strconv.Atoi(props[CONF_CACHE_CLEAN])
 	fgCache = cache.New(time.Duration(expir)*time.Second, time.Duration(clean)*time.Second)
 
-	// Serve static content
-	http.Handle("/", http.FileServer(http.Dir("views")))
-	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
+	m := martini.Classic()
+	m.Use(martini.Logger())
 	// Serve dynamic content
-	http.Handle("/api/status", http.HandlerFunc(StatusHandler))
-	http.Handle("/api/logs", http.HandlerFunc(LogsHandler))
-	http.Handle("/api/config", http.HandlerFunc(ConfigHandler))
+	m.Get("/api/status", StatusHandler)
+	m.Get("/api/logs", LogsHandler)
+	m.Get("/api/config", ConfigHandler)
 
 	// Up and listening
-	err := http.ListenAndServe(":"+props[CONF_SERVER_PORT], nil)
-	if err != nil {
-		logger.Fatal("ListenAndServe:", err)
-	}
+	logger.Info("Will start listening on port", props[CONF_SERVER_PORT])
+	m.RunOnAddr(":" + props[CONF_SERVER_PORT])
 }

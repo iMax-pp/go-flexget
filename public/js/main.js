@@ -3,18 +3,18 @@ angular.module('goFlexGet', ['ngRoute'])
         $routeProvider
             .when('/', {
                 controller: 'MainCtrl',
-                templateUrl: '/main.html'
+                templateUrl: '/pages/main.html'
             })
             .when('/config', {
                 controller: 'ConfigCtrl',
-                templateUrl: '/config.html'
+                templateUrl: '/pages/config.html'
             })
             .when('/logs', {
                 controller: 'LogsCtrl',
-                templateUrl: '/logs.html'
+                templateUrl: '/pages/logs.html'
             })
             .otherwise({
-                redirectTo: '/'
+                redirectTo: '/pages/'
             });
     })
 
