@@ -14,7 +14,7 @@ angular.module('goFlexGet', ['ngRoute'])
                 templateUrl: '/pages/logs.html'
             })
             .otherwise({
-                redirectTo: '/pages/'
+                redirectTo: '/'
             });
     })
 
