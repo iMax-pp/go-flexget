@@ -1,4 +1,4 @@
-// Copyright (c) 2014 Maxime SIMON. All rights reserved.
+// Copyright (c) 2014-2015 Maxime SIMON. All rights reserved.
 
 package main
 
