@@ -1,5 +1,6 @@
 .DS_Store
 *.log
 go-flexget
+README.html
 nohup.out
 logs/
