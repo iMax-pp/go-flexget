@@ -13,5 +13,5 @@
 ## Components ##
 
 - **Go**, version `1.4.2`
-- **AngularJS**, version `1.3.2`
-- **Bootstrap**, version `3.3.0`
+- **AngularJS**, version `1.3.14`
+- **Bootstrap**, version `3.3.2`
