@@ -3,6 +3,8 @@
 package main
 
 import (
+	"fmt"
+	"github.com/golang/glog"
 	"net/http"
 )
 
@@ -11,18 +13,18 @@ const getConfigCmd = "cat .flexget/config.yml"
 const CACHE_CONFIG_KEY = "config"
 
 // '/api/config' request handler. Store FlexGet data in cache
-func ConfigHandler() (int, string) {
-	data, exist := fgCache.Get(CACHE_CONFIG_KEY)
-	if exist {
-		logger.Debug("Retrieve FlexGet config from cache")
-		return http.StatusOK, data.(string)
+func ConfigHandler(w http.ResponseWriter, req *http.Request) {
+	if data, exist := fgCache.Get(CACHE_CONFIG_KEY); exist {
+		glog.Info("Retrieve FlexGet config from cache")
+		fmt.Fprint(w, data.(string))
 	} else {
-		logger.Debug("Retrieve FlexGet config from server")
+		glog.Info("Retrieve FlexGet config from server")
 		if body, err := ExecSSHCmd(getConfigCmd); err != nil {
-			return http.StatusInternalServerError, err.Error()
+			glog.Error("Error retrieving FlexGet config: ", err)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 		} else {
 			fgCache.Add(CACHE_CONFIG_KEY, body, 0)
-			return http.StatusOK, body
+			fmt.Fprint(w, body)
 		}
 	}
 }

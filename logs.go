@@ -3,6 +3,8 @@
 package main
 
 import (
+	"fmt"
+	"github.com/golang/glog"
 	"net/http"
 )
 
@@ -11,18 +13,18 @@ const getLogsCmd = "tail -100 .flexget/flexget.log"
 const CACHE_LOGS_KEY = "logs"
 
 // '/api/logs' request handler. Store FlexGet data in cache
-func LogsHandler() (int, string) {
-	data, exist := fgCache.Get(CACHE_LOGS_KEY)
-	if exist {
-		logger.Debug("Retrieve FlexGet logs from cache")
-		return http.StatusOK, data.(string)
+func LogsHandler(w http.ResponseWriter, req *http.Request) {
+	if data, exist := fgCache.Get(CACHE_LOGS_KEY); exist {
+		glog.Info("Retrieve FlexGet logs from cache")
+		fmt.Fprint(w, data.(string))
 	} else {
-		logger.Debug("Retrieve FlexGet logs from server")
+		glog.Info("Retrieve FlexGet logs from server")
 		if body, err := ExecSSHCmd(getLogsCmd); err != nil {
-			return http.StatusInternalServerError, err.Error()
+			glog.Error("Error retrieving FlexGet logs: ", err)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 		} else {
 			fgCache.Add(CACHE_LOGS_KEY, body, 0)
-			return http.StatusOK, body
+			fmt.Fprint(w, body)
 		}
 	}
 }

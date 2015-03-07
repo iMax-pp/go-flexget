@@ -6,6 +6,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"github.com/golang/glog"
 	"golang.org/x/crypto/ssh"
 	"io/ioutil"
 	"os"
@@ -23,31 +24,31 @@ func ExecSSHCmd(cmd string) (string, error) {
 	client, err := ssh.Dial("tcp", props[CONF_FG_SSH_SERVER], config)
 	if err != nil {
 		newErr := errors.New("Failed to dial: " + err.Error())
-		logger.Error(newErr)
+		glog.Error(newErr)
 		return "", newErr
 	}
 	defer client.Close()
-	logger.Debug("Logged on server", client.RemoteAddr().String())
+	glog.Info("Logged on server ", client.RemoteAddr().String())
 
 	// Open a session, to launch the command
 	session, err := client.NewSession()
 	if err != nil {
 		newErr := errors.New("Failed to create session: " + err.Error())
-		logger.Error(newErr)
+		glog.Error(newErr)
 		return "", newErr
 	}
 	defer session.Close()
-	logger.Debug("Session opened on", client.RemoteAddr().String())
+	glog.Info("Session opened on ", client.RemoteAddr().String())
 
 	// Execute command retrieve console output
 	var body bytes.Buffer
 	session.Stdout = &body
 	if err := session.Run(cmd); err != nil {
 		newErr := errors.New("Failed to run: " + err.Error())
-		logger.Error(newErr)
+		glog.Error(newErr)
 		return "", newErr
 	}
-	logger.Debug("Command '", cmd, "' executed")
+	glog.Info("Command '", cmd, "' executed")
 
 	return body.String(), nil
 }
@@ -57,7 +58,7 @@ func getPrivateKey() ssh.Signer {
 	keyFile, err := os.Open(props[CONF_FG_SSH_PRIVKEY])
 	if err != nil {
 		fmt.Println(err)
-		logger.Fatal(err)
+		glog.Fatal(err)
 	}
 	defer keyFile.Close()
 

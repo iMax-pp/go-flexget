@@ -3,16 +3,18 @@
 package main
 
 import (
-	"github.com/go-martini/martini"
+	"flag"
+	"fmt"
+	"github.com/golang/glog"
 	utils "github.com/iMax-pp/go-utils"
-	"github.com/martini-contrib/render"
 	cache "github.com/robfig/go-cache"
+	"net/http"
+	"os"
 	"strconv"
 	"time"
 )
 
 var (
-	logger  *utils.Logger
 	props   map[string]string
 	fgCache *cache.Cache
 )
@@ -30,10 +32,18 @@ const (
 	CONF_CACHE_CLEAN    = "cache.cleanup"
 )
 
+func init() {
+	flag.Usage = usage
+	flag.Parse()
+}
+
+func usage() {
+	fmt.Fprintf(os.Stderr, "usage: go-flexget -stderrthreshold=[INFO|WARN|FATAL] -log_dir=[string]\n")
+	flag.PrintDefaults()
+	os.Exit(2)
+}
+
 func main() {
-	// Init Logger
-	logger, _ = utils.NewLoggerFromConfig(LOG_PROPS_FILE)
-	defer logger.Close()
 	// Init Application properties
 	props, _ = utils.LoadConfig(APP_PROPS_FILE)
 	// Init FlexGet Cache
@@ -41,15 +51,17 @@ func main() {
 	clean, _ := strconv.Atoi(props[CONF_CACHE_CLEAN])
 	fgCache = cache.New(time.Duration(expir)*time.Second, time.Duration(clean)*time.Second)
 
-	m := martini.Classic()
-	m.Use(martini.Logger())
-	m.Use(render.Renderer())
+	// Service static content
+	http.Handle("/", http.FileServer(http.Dir("public")))
+	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
 
-	m.Get("/api/status", StatusHandler)
-	m.Get("/api/logs", LogsHandler)
-	m.Get("/api/config", ConfigHandler)
+	http.Handle("/api/status", http.HandlerFunc(StatusHandler))
+	http.Handle("/api/logs", http.HandlerFunc(LogsHandler))
+	http.Handle("/api/config", http.HandlerFunc(ConfigHandler))
 
 	// Up and listening
-	logger.Info("Will start listening on port", props[CONF_SERVER_PORT])
-	m.RunOnAddr(":" + props[CONF_SERVER_PORT])
+	glog.Info("Will start listening on port ", props[CONF_SERVER_PORT])
+	if err := http.ListenAndServe(":"+props[CONF_SERVER_PORT], nil); err != nil {
+		glog.Fatal("ListenAndServe:", err)
+	}
 }
