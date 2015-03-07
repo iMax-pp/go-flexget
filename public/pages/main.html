@@ -25,6 +25,10 @@
 	ng-disabled="isStopping||statusLoading||!fgStatus.Status">
 	<i class="fa fa-stop" ng-hide="isStopping"></i>
 	<i class="fa fa-spinner fa-spin" ng-show="isStopping"></i>
+	<button type="button" class="btn btn-default" title="Reload FlexGet Config" ng-click="reloadFlexGet()"
+	ng-disabled="isReloading||statusLoading||!fgStatus.Status">
+	<i class="fa fa-cogs" ng-hide="isReloading"></i>
+	<i class="fa fa-spinner fa-spin" ng-show="isReloading"></i>
 	</button>
 </div>
 <div class="alert alert-danger" role="alert" ng-show="statusError" ng-bind-html="statusError">

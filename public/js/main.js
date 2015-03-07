@@ -76,5 +76,21 @@ angular.module('goFlexGet', ['ngRoute'])
                     $scope.isStopping = false;
                 });
         };
+
+        $scope.isReloading = false;
+        $scope.reloadFlexGet = function() {
+            $scope.isReloading = true;
+            $http.get('/api/flexget/reload')
+                .success(function(data) {
+                    $scope.getStatus();
+                    $scope.isReloading = false;
+                })
+                .error(function(data, status) {
+                    data = data || 'Request failed';
+                    console.error(data);
+                    $scope.getStatus();
+                    $scope.isReloading = false;
+                });
+        };
     }
 ]);
