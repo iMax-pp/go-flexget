@@ -1,11 +1,12 @@
 // Copyright (c) 2014-2015 Maxime SIMON. All rights reserved.
 
-package main
+package services
 
 import (
 	"encoding/json"
 	"fmt"
 	"github.com/golang/glog"
+	. "github.com/iMax-pp/go-flexget/app/common"
 	"net/http"
 	"strings"
 )

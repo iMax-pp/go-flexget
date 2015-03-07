@@ -1,6 +1,6 @@
 // Copyright (c) 2014-2015 Maxime SIMON. All rights reserved.
 
-package main
+package common
 
 import (
 	"bytes"
@@ -12,16 +12,22 @@ import (
 	"os"
 )
 
+const (
+	CONF_FG_SSH_SERVER  = "flexget.ssh.server"
+	CONF_FG_SSH_USER    = "flexget.ssh.user"
+	CONF_FG_SSH_PRIVKEY = "flexget.ssh.privatekey"
+)
+
 // Execute a given command via SSH on server "flexget.ssh.server" with user "flexget.ssh.user"
 func ExecSSHCmd(cmd string) (string, error) {
 	// Init SSH config with user and private key
 	config := &ssh.ClientConfig{
-		User: props[CONF_FG_SSH_USER],
+		User: Props()[CONF_FG_SSH_USER],
 		Auth: []ssh.AuthMethod{ssh.PublicKeys(getPrivateKey())},
 	}
 
 	// Create a SSH client
-	client, err := ssh.Dial("tcp", props[CONF_FG_SSH_SERVER], config)
+	client, err := ssh.Dial("tcp", Props()[CONF_FG_SSH_SERVER], config)
 	if err != nil {
 		newErr := errors.New("Failed to dial: " + err.Error())
 		glog.Error(newErr)
@@ -55,7 +61,7 @@ func ExecSSHCmd(cmd string) (string, error) {
 
 // Retrieve Signer (private key), from path defined in property "flexget.ssh.privatekey"
 func getPrivateKey() ssh.Signer {
-	keyFile, err := os.Open(props[CONF_FG_SSH_PRIVKEY])
+	keyFile, err := os.Open(Props()[CONF_FG_SSH_PRIVKEY])
 	if err != nil {
 		fmt.Println(err)
 		glog.Fatal(err)

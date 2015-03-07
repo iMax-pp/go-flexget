@@ -1,10 +1,11 @@
 // Copyright (c) 2014-2015 Maxime SIMON. All rights reserved.
 
-package main
+package services
 
 import (
 	"fmt"
 	"github.com/golang/glog"
+	. "github.com/iMax-pp/go-flexget/app/common"
 	"net/http"
 )
 
@@ -14,7 +15,7 @@ const CACHE_LOGS_KEY = "logs"
 
 // '/api/logs' request handler. Store FlexGet data in cache
 func LogsHandler(w http.ResponseWriter, req *http.Request) {
-	if data, exist := fgCache.Get(CACHE_LOGS_KEY); exist {
+	if data, exist := Cache().Get(CACHE_LOGS_KEY); exist {
 		glog.Info("Retrieve FlexGet logs from cache")
 		fmt.Fprint(w, data.(string))
 	} else {
@@ -23,7 +24,7 @@ func LogsHandler(w http.ResponseWriter, req *http.Request) {
 			glog.Error("Error retrieving FlexGet logs: ", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		} else {
-			fgCache.Add(CACHE_LOGS_KEY, body, 0)
+			Cache().Add(CACHE_LOGS_KEY, body, 0)
 			fmt.Fprint(w, body)
 		}
 	}
