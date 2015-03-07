@@ -14,10 +14,11 @@ const (
 )
 
 func Server() {
-	// Service static content
+	// Serve static content
 	http.Handle("/", http.FileServer(http.Dir("public")))
 	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
 
+	// Serve dynamic content
 	http.Handle("/api/status", http.HandlerFunc(StatusHandler))
 	http.Handle("/api/logs", http.HandlerFunc(LogsHandler))
 	http.Handle("/api/config", http.HandlerFunc(ConfigHandler))
