@@ -48,7 +48,7 @@ angular.module('goFlexGet', ['ngRoute'])
         $scope.isStarting = false;
         $scope.startFlexGet = function() {
             $scope.isStarting = true;
-            $http.get('/api/start')
+            $http.get('/api/flexget/start')
                 .success(function(data) {
                     $scope.getStatus();
                     $scope.isStarting = false;
@@ -64,7 +64,7 @@ angular.module('goFlexGet', ['ngRoute'])
         $scope.isStopping = false;
         $scope.stopFlexGet = function() {
             $scope.isStopping = true;
-            $http.get('/api/stop')
+            $http.get('/api/flexget/stop')
                 .success(function(data) {
                     $scope.getStatus();
                     $scope.isStopping = false;
