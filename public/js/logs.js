@@ -16,7 +16,7 @@ angular.module('goFlexGet')
                     })
                     .error(function(data, status) {
                         $scope.logsLoading = false;
-                        var data = data || "Request failed";
+                        data = data || 'Request failed';
                         $scope.logsError = $sce.trustAsHtml(
                             '<strong>Unable to retrieve FlexGet logs:</strong> ' + data +
                             ' (' +

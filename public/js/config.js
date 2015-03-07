@@ -13,7 +13,7 @@ angular.module('goFlexGet')
                 })
                 .error(function(data, status) {
                     $scope.configLoading = false;
-                    var data = data || "Request failed";
+                    data = data || 'Request failed';
                     $scope.configError = $sce.trustAsHtml(
                         '<strong>Unable to retrieve FlexGet configuration:</strong> ' +
                         data +

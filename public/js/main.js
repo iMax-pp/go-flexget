@@ -37,7 +37,7 @@ angular.module('goFlexGet', ['ngRoute'])
                 })
                 .error(function(data, status) {
                     $scope.statusLoading = false;
-                    var data = data || "Request failed";
+                    data = data || 'Request failed';
                     $scope.statusError = $sce.trustAsHtml(
                         '<strong>Unable to retrieve FlexGet status:</strong> ' + data +
                         ' (' + status + ')');
@@ -54,8 +54,8 @@ angular.module('goFlexGet', ['ngRoute'])
                     $scope.isStarting = false;
                 })
                 .error(function(data, status) {
-                    var data = data || "Request failed";
-                    console.error(data)
+                    data = data || 'Request failed';
+                    console.error(data);
                     $scope.getStatus();
                     $scope.isStarting = false;
                 });
@@ -70,8 +70,8 @@ angular.module('goFlexGet', ['ngRoute'])
                     $scope.isStopping = false;
                 })
                 .error(function(data, status) {
-                    var data = data || "Request failed";
-                    console.error(data)
+                    data = data || 'Request failed';
+                    console.error(data);
                     $scope.getStatus();
                     $scope.isStopping = false;
                 });
