@@ -22,6 +22,9 @@ func Server() {
 	http.Handle("/api/status", http.HandlerFunc(StatusHandler))
 	http.Handle("/api/logs", http.HandlerFunc(LogsHandler))
 	http.Handle("/api/config", http.HandlerFunc(ConfigHandler))
+	http.Handle("/api/flexget/start", http.HandlerFunc(StartFlexGetHandler))
+	http.Handle("/api/flexget/stop", http.HandlerFunc(StopFlexGetHandler))
+	http.Handle("/api/flexget/reload", http.HandlerFunc(ReloadFlexGetHandler))
 
 	// Up and listening
 	glog.Info("Will start listening on port ", Props()[CONF_SERVER_PORT])
