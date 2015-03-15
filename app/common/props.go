@@ -10,11 +10,12 @@ const (
 	APP_PROPS_FILE = "application.properties"
 )
 
-var props map[string]string
+var props = initProps()
 
 // Init Application properties
-func init() {
-	props, _ = utils.LoadConfig(APP_PROPS_FILE)
+func initProps() map[string]string {
+	properties, _ := utils.LoadConfig(APP_PROPS_FILE)
+	return properties
 }
 
 func Props() map[string]string {
