@@ -1,4 +1,4 @@
-angular.module('goFlexGet', ['ngRoute'])
+angular.module('goFlexGet', ['ngRoute', 'ngMaterial', 'duScroll'])
     .config(function($routeProvider) {
         $routeProvider
             .when('/', {
@@ -26,8 +26,17 @@ angular.module('goFlexGet', ['ngRoute'])
     }
 ])
 
-.controller('MainCtrl', ['$scope', '$http',
-    function($scope, $http) {
+.controller('MainCtrl', ['$scope', '$mdToast', '$http',
+    function($scope, $mdToast, $http) {
+        showErrorToast = function(error) {
+            $mdToast.show(
+                $mdToast.simple()
+                .content(error)
+                .action('X')
+                .hideDelay(0)
+            );
+        };
+
         $scope.getStatus = function() {
             $scope.statusLoading = true;
             $http.get('/api/status')
@@ -38,8 +47,7 @@ angular.module('goFlexGet', ['ngRoute'])
                 .error(function(data, status) {
                     $scope.statusLoading = false;
                     data = data || 'Request failed';
-                    $scope.statusError = $sce.trustAsHtml(
-                        '<strong>Unable to retrieve FlexGet status:</strong> ' + data +
+                    showErrorToast('Unable to retrieve FlexGet status: ' + data +
                         ' (' + status + ')');
                 });
         };
@@ -55,7 +63,7 @@ angular.module('goFlexGet', ['ngRoute'])
                 })
                 .error(function(data, status) {
                     data = data || 'Request failed';
-                    console.error(data);
+                    showErrorToast('Unable to start FlexGet: ' + data);
                     $scope.getStatus();
                     $scope.isStarting = false;
                 });
@@ -71,7 +79,7 @@ angular.module('goFlexGet', ['ngRoute'])
                 })
                 .error(function(data, status) {
                     data = data || 'Request failed';
-                    console.error(data);
+                    showErrorToast('Unable to stop FlexGet: ' + data);
                     $scope.getStatus();
                     $scope.isStopping = false;
                 });
@@ -86,8 +94,7 @@ angular.module('goFlexGet', ['ngRoute'])
                     $scope.isReloading = false;
                 })
                 .error(function(data, status) {
-                    data = data || 'Request failed';
-                    console.error(data);
+                    showErrorToast('Unable to reload FlexGet: ' + data);
                     $scope.getStatus();
                     $scope.isReloading = false;
                 });

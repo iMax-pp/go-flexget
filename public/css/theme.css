@@ -1,12 +1,31 @@
-body {
-	padding-top: 5pc;
-	padding-bottom: 2pc;
+md-content#logs {
+	height: 40pc;
 }
 
-pre#logs {
-	height: 35pc;
+pre.prettyprint {
+	border: 0;
 }
 
-.spinner {
-	margin-left: 3pc;
+.menu, .menu ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.menu a.md-button {
+	display: block;
+}
+.menu .md-button {
+	border-radius: 0;
+	color: inherit;
+	cursor: pointer;
+	font-weight: 400;
+	line-height: 40px;
+	margin: 0;
+	max-height: 40px;
+	overflow: hidden;
+	padding: 0px 16px;
+	text-align: left;
+	text-decoration: none;
+	white-space: normal;
+	width: 100%;
 }

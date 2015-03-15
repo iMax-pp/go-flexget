@@ -1,54 +1,59 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="goFlexGet">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Go-FlexGet</title>
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-        <!-- Google Code Prettify CSS -->
-        <link rel="stylesheet" href="//google-code-prettify.googlecode.com/svn/loader/prettify.css">
-        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-        <!-- User-defined style -->
-        <link rel="stylesheet" href="/public/css/theme.css">
-    </head>
-    <body role="document">
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                    data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#/">Go-FlexGet</a>
-                </div>
-                <div id="navbar" class="collapse navbar-collapse" ng-controller="HeaderCtrl">
-                    <ul class="nav navbar-nav">
-                        <li ng-class="{active: isActive('/')}"><a href="#/">Home</a></li>
-                        <li ng-class="{active: isActive('/logs')}"><a href="#/logs">Logs</a></li>
-                        <li ng-class="{active: isActive('/config')}"><a href="#/config">Config</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        <div class="container" role="main" ng-view>
-        </div>
-        <!-- jQuery -->
-        <script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
-        <!-- AngularJS -->
-        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-route.min.js"></script>
-        <!-- Bootstrap JS -->
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-        <!-- Google Code Prettify JS -->
-        <script src="//google-code-prettify.googlecode.com/svn/loader/prettify.js"></script>
-        <!-- User-defined JS -->
-        <script src="/public/js/main.js"></script>
-        <script src="/public/js/logs.js"></script>
-        <script src="/public/js/config.js"></script>
-    </body>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Go-FlexGet</title>
+	<!-- Angular Material CSS -->
+	<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/angular_material/0.8.3/angular-material.min.css">
+	<!-- Google Code Prettify CSS -->
+	<link rel="stylesheet" href="//google-code-prettify.googlecode.com/svn/loader/prettify.css">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+	<!-- User-defined style -->
+	<link rel="stylesheet" href="/public/css/theme.css">
+</head>
+<body role="document">
+<div layout="column">
+	<section layout="row">
+		<md-sidenav class="md-sidenav-left" md-is-locked-open="true">
+			<md-toolbar class="md-default-theme">
+				<h1 class="md-toolbar-tools">Go FlexGet</h1>
+			</md-toolbar>
+			<md-content flex role="navigation" class="md-default-theme">
+				<ul class="menu">
+					<li>
+						<a class="md-button md-default-theme" href="#/">Home</a>
+					</li>
+					<li>
+						<a class="md-button md-default-theme" href="#/logs">Logs</a>
+					</li>
+					<li>
+						<a class="md-button md-default-theme" href="#/config">Config</a>
+					</li>
+				</ul>
+			</md-content>
+		</md-sidenav>
+		<md-content flex class="md-padding container" role="main" ng-view>
+		</md-content>
+	</section>
+</div>
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+<!-- AngularJS -->
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-route.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular-animate.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular-aria.min.js"></script>
+<!-- Angular Scroll JS -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/angular-scroll/0.6.5/angular-scroll.min.js"></script>
+<!-- Angular Material JS -->
+<script src="//ajax.googleapis.com/ajax/libs/angular_material/0.8.3/angular-material.min.js"></script>
+<!-- Google Code Prettify JS -->
+<script src="//google-code-prettify.googlecode.com/svn/loader/prettify.js"></script>
+<!-- User-defined JS -->
+<script src="/public/js/main.js"></script>
+<script src="/public/js/logs.js"></script>
+<script src="/public/js/config.js"></script>
+</body>
 </html>

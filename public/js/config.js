@@ -1,6 +1,15 @@
 angular.module('goFlexGet')
-    .controller('ConfigCtrl', ['$scope', '$http', '$sce', '$timeout',
-        function($scope, $http, $sce, $timeout) {
+    .controller('ConfigCtrl', ['$scope', '$mdToast', '$http', '$sce', '$timeout',
+        function($scope, $mdToast, $http, $sce, $timeout) {
+            showErrorToast = function(error) {
+                $mdToast.show(
+                    $mdToast.simple()
+                    .content(error)
+                    .action('X')
+                    .hideDelay(0)
+                );
+            };
+
             $scope.configLoading = true;
             $http.get('/api/config')
                 .success(function(data) {
@@ -14,9 +23,7 @@ angular.module('goFlexGet')
                 .error(function(data, status) {
                     $scope.configLoading = false;
                     data = data || 'Request failed';
-                    $scope.configError = $sce.trustAsHtml(
-                        '<strong>Unable to retrieve FlexGet configuration:</strong> ' +
-                        data +
+                    showErrorToast('Unable to retrieve FlexGet configuration: ' + data +
                         ' (' + status + ')');
                 });
         }

@@ -1,12 +1,17 @@
-<div ng-hide="logsError">
-<pre id="logs" ng-hide="logsLoading">
+<div layout="column" style="padding-bottom: 15px;">
+	<md-content id="logs" ng-hide="logsLoading">
+		<pre>
 {{flexgetLogs}}
-</pre>
-	<button type="button" class="btn btn-default" title="Refresh Logs"
-	ng-click="getLogs()" ng-disabled="logsLoading">
-	<i class="fa fa-refresh" ng-hide="logsLoading"></i>
-	<i class="fa fa-refresh fa-spin" ng-show="logsLoading"></i>
-	</button>
+		</pre>
+		<span id="logs-bottom"></span>
+	</md-content>
+	<div>
+		<md-button class="md-primary" aria-label="Refresh Logs"
+			ng-click="getLogs()" ng-disabled="logsLoading">
+			<i class="fa fa-refresh" ng-hide="logsLoading"></i>
+		</md-button>
+	</div>
 </div>
-<div class="alert alert-danger" role="alert" ng-show="logsError" ng-bind-html="logsError">
+<div layout="row" layout-sm="column" layout-align="space-around" ng-show="logsLoading">
+	<md-progress-circular md-mode="indeterminate"></md-progress-circular>
 </div>

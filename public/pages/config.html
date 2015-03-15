@@ -1,6 +1,10 @@
-<pre id="config" class="prettyprint" ng-hide="configError||configLoading">
+<div layout="column" style="padding-bottom: 15px;">
+	<md-content ng-hide="configLoading">
+		<pre id="config" class="prettyprint">
 {{flexgetConfig}}
-</pre>
-<i class="spinner fa fa-spinner fa-spin fa-2x" ng-show="configLoading"></i>
-<div class="alert alert-danger" role="alert" ng-show="configError" ng-bind-html="configError">
+		</pre>
+	</md-content>
+</div>
+<div layout="row" layout-sm="column" layout-align="space-around" ng-show="configLoading">
+	<md-progress-circular md-mode="indeterminate"></md-progress-circular>
 </div>
