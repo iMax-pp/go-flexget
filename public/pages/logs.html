@@ -1,17 +1,16 @@
 <div layout="column" style="padding-bottom: 15px;">
-	<md-content id="logs" ng-hide="logsLoading">
-		<pre>
-{{flexgetLogs}}
-		</pre>
-		<span id="logs-bottom"></span>
-	</md-content>
-	<div>
-		<md-button class="md-primary" aria-label="Refresh Logs"
-			ng-click="getLogs()" ng-disabled="logsLoading">
-			<i class="fa fa-refresh" ng-hide="logsLoading"></i>
-		</md-button>
-	</div>
+  <md-content id="logs" ng-hide="logsLoading">
+    <pre>
+      {{flexgetLogs}}
+    </pre>
+    <span id="logs-bottom"></span>
+  </md-content>
+  <div>
+    <md-button class="md-primary" aria-label="Refresh Logs" ng-click="getLogs()" ng-disabled="logsLoading">
+      <i class="fa fa-refresh" ng-hide="logsLoading"></i>
+    </md-button>
+  </div>
 </div>
 <div layout="row" layout-sm="column" layout-align="space-around" ng-show="logsLoading">
-	<md-progress-circular md-mode="indeterminate"></md-progress-circular>
+  <md-progress-circular md-mode="indeterminate"></md-progress-circular>
 </div>

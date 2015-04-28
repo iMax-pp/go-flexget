@@ -5,7 +5,7 @@ package services
 import (
 	"fmt"
 	"github.com/golang/glog"
-	. "github.com/iMax-pp/go-flexget/app/common"
+	common "github.com/iMax-pp/go-flexget/app/common"
 	"net/http"
 	"strings"
 )
@@ -16,7 +16,7 @@ var (
 	reloadFlexGetCmd = "/opt/local/bin/flexget daemon reload"
 )
 
-// '/api/flexget/start' request handler.
+// StartFlexGetHandler '/api/flexget/start' request handler.
 func StartFlexGetHandler(w http.ResponseWriter, req *http.Request) {
 	glog.Info("Start FlexGet")
 	if result, err := execFlexGetAction(startFlexGetCmd); err != nil {
@@ -27,7 +27,7 @@ func StartFlexGetHandler(w http.ResponseWriter, req *http.Request) {
 	}
 }
 
-// '/api/flexget/stop' request handler.
+// StopFlexGetHandler '/api/flexget/stop' request handler.
 func StopFlexGetHandler(w http.ResponseWriter, req *http.Request) {
 	glog.Info("Stop FlexGet")
 	if result, err := execFlexGetAction(stopFlexGetCmd); err != nil {
@@ -38,7 +38,7 @@ func StopFlexGetHandler(w http.ResponseWriter, req *http.Request) {
 	}
 }
 
-// '/api/flexget/reload' request handler.
+// ReloadFlexGetHandler '/api/flexget/reload' request handler.
 func ReloadFlexGetHandler(w http.ResponseWriter, req *http.Request) {
 	glog.Info("Reload FlexGet")
 	if result, err := execFlexGetAction(reloadFlexGetCmd); err != nil {
@@ -50,7 +50,7 @@ func ReloadFlexGetHandler(w http.ResponseWriter, req *http.Request) {
 }
 
 func execFlexGetAction(cmd string) (string, error) {
-	body, err := ExecSSHCmd(cmd)
+	body, err := common.ExecSSHCmd(cmd)
 	if err != nil && !strings.Contains(err.Error(), "Process exited with: 1") {
 		return "", err
 	}

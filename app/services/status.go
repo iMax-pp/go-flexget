@@ -6,11 +6,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/golang/glog"
-	. "github.com/iMax-pp/go-flexget/app/common"
+	common "github.com/iMax-pp/go-flexget/app/common"
 	"net/http"
 	"strings"
 )
 
+// Status of FlexGet
 type Status struct {
 	Status  bool
 	Version string
@@ -22,7 +23,7 @@ var getStatusCmd = "ps | grep flexget | grep -v grep"
 // Command to retrieve FlexGet version
 var getVersionCmd = "cat /opt/local/bin/flexget | grep __requires__ | sed 's/__requires__ = .FlexGet==\\(.*\\)./\\1/'"
 
-// '/api/status' request handler.
+// StatusHandler '/api/status' request handler.
 func StatusHandler(w http.ResponseWriter, req *http.Request) {
 	glog.Info("Retrieve FlexGet status from server")
 	status, err := getStatus()
@@ -44,7 +45,7 @@ func StatusHandler(w http.ResponseWriter, req *http.Request) {
 }
 
 func getStatus() (bool, error) {
-	body, err := ExecSSHCmd(getStatusCmd)
+	body, err := common.ExecSSHCmd(getStatusCmd)
 	if err != nil && !strings.Contains(err.Error(), "Process exited with: 1") {
 		return false, err
 	}
@@ -52,7 +53,7 @@ func getStatus() (bool, error) {
 }
 
 func getVersion() (string, error) {
-	body, err := ExecSSHCmd(getVersionCmd)
+	body, err := common.ExecSSHCmd(getVersionCmd)
 	if err != nil {
 		return "", err
 	}

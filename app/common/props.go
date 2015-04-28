@@ -7,17 +7,18 @@ import (
 )
 
 const (
-	APP_PROPS_FILE = "application.properties"
+	appPropsFile = "application.properties"
 )
 
 var props = initProps()
 
 // Init Application properties
 func initProps() map[string]string {
-	properties, _ := utils.LoadConfig(APP_PROPS_FILE)
+	properties, _ := utils.LoadConfig(appPropsFile)
 	return properties
 }
 
+// Props returns the application properties
 func Props() map[string]string {
 	return props
 }

@@ -5,26 +5,28 @@ package services
 import (
 	"fmt"
 	"github.com/golang/glog"
-	. "github.com/iMax-pp/go-flexget/app/common"
+	common "github.com/iMax-pp/go-flexget/app/common"
 	"net/http"
 )
 
-// Command to retrieve FlexGet configuration
-const getConfigCmd = "cat .flexget/config.yml"
-const CACHE_CONFIG_KEY = "config"
+const (
+	// Command to retrieve FlexGet configuration
+	getConfigCmd   = "cat .flexget/config.yml"
+	cacheConfigKey = "config"
+)
 
-// '/api/config' request handler. Store FlexGet data in cache
+// ConfigHandler '/api/config' request handler. Store FlexGet data in cache
 func ConfigHandler(w http.ResponseWriter, req *http.Request) {
-	if data, exist := Cache().Get(CACHE_CONFIG_KEY); exist {
+	if data, exist := common.Cache().Get(cacheConfigKey); exist {
 		glog.Info("Retrieve FlexGet config from cache")
 		fmt.Fprint(w, data.(string))
 	} else {
 		glog.Info("Retrieve FlexGet config from server")
-		if body, err := ExecSSHCmd(getConfigCmd); err != nil {
+		if body, err := common.ExecSSHCmd(getConfigCmd); err != nil {
 			glog.Error("Error retrieving FlexGet config: ", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		} else {
-			Cache().Add(CACHE_CONFIG_KEY, body, 0)
+			common.Cache().Add(cacheConfigKey, body, 0)
 			fmt.Fprint(w, body)
 		}
 	}

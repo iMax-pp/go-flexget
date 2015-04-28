@@ -1,35 +1,33 @@
 <div layout="column" layout-align="center start" layout-margin>
-	<div layout-align="space-around" ng-show="statusLoading">
-    	<md-progress-circular md-mode="indeterminate"></md-progress-circular>
-    </div>
-	<div flex ng-show="fgStatus.Status&&!statusLoading">
-		<i class="fa fa-check"></i> <strong>FlexGet is Running!</strong>
-	</div>
-	<div flex role="alert" ng-show="!fgStatus.Status&&!statusLoading">
-		<i class="fa fa-remove"></i> <strong>FlexGet is Stopped!</strong>
-	</div>
-	<div flex ng-hide="statusLoading">
-		<strong>Version:</strong> {{fgStatus.Version}}
-	</div>
-	<div flex class="btn-group">
-		<md-button class="md-primary" aria-label="Refresh Status"
-			ng-click="getStatus()" ng-disabled="statusLoading">
-			<i class="fa fa-refresh"></i>
-		</md-button>
-		<md-button class="md-primary" aria-label="Start FlexGet"
-			ng-click="startFlexGet()" ng-disabled="isStarting||statusLoading||fgStatus.Status">
-			<i class="fa fa-play" ng-hide="isStarting"></i>
-			<i class="fa fa-circle-o-notch fa-spin" ng-show="isStarting"></i>
-		</md-button>
-		<md-button class="md-primary" aria-label="Stop FlexGet"
-			ng-click="stopFlexGet()" ng-disabled="isStopping||statusLoading||!fgStatus.Status">
-			<i class="fa fa-stop" ng-hide="isStopping"></i>
-			<i class="fa fa-circle-o-notch fa-spin" ng-show="isStopping"></i>
-		</md-button>
-		<md-button class="md-primary" aria-label="Reload FlexGet Config"
-			ng-click="reloadFlexGet()" ng-disabled="isReloading||statusLoading||!fgStatus.Status">
-			<i class="fa fa-cogs" ng-hide="isReloading"></i>
-			<i class="fa fa-circle-o-notch fa-spin" ng-show="isReloading"></i>
-		</md-button>
-	</div>
+  <div layout-align="space-around" ng-show="statusLoading">
+    <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+  </div>
+  <div flex ng-show="fgStatus.Status&&!statusLoading">
+    <i class="fa fa-check"></i>
+    <strong>FlexGet is Running!</strong>
+  </div>
+  <div flex role="alert" ng-show="!fgStatus.Status&&!statusLoading">
+    <i class="fa fa-remove"></i>
+    <strong>FlexGet is Stopped!</strong>
+  </div>
+  <div flex ng-hide="statusLoading">
+    <strong>Version:</strong> {{fgStatus.Version}}
+  </div>
+  <div flex class="btn-group">
+    <md-button class="md-primary" aria-label="Refresh Status" ng-click="getStatus()" ng-disabled="statusLoading">
+      <i class="fa fa-refresh"></i>
+    </md-button>
+    <md-button class="md-primary" aria-label="Start FlexGet" ng-click="startFlexGet()" ng-disabled="isStarting||statusLoading||fgStatus.Status">
+      <i class="fa fa-play" ng-hide="isStarting"></i>
+      <i class="fa fa-circle-o-notch fa-spin" ng-show="isStarting"></i>
+    </md-button>
+    <md-button class="md-primary" aria-label="Stop FlexGet" ng-click="stopFlexGet()" ng-disabled="isStopping||statusLoading||!fgStatus.Status">
+      <i class="fa fa-stop" ng-hide="isStopping"></i>
+      <i class="fa fa-circle-o-notch fa-spin" ng-show="isStopping"></i>
+    </md-button>
+    <md-button class="md-primary" aria-label="Reload FlexGet Config" ng-click="reloadFlexGet()" ng-disabled="isReloading||statusLoading||!fgStatus.Status">
+      <i class="fa fa-cogs" ng-hide="isReloading"></i>
+      <i class="fa fa-circle-o-notch fa-spin" ng-show="isReloading"></i>
+    </md-button>
+  </div>
 </div>
