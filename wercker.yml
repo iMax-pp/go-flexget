@@ -1,1 +1,10 @@
-box: wercker/default
+box: google/golang
+
+build:
+  steps:
+    - setup-go-workspace
+    - wercker/golint
+    - script:
+        name: go build
+        code: |
+          go build ./...

@@ -1,5 +1,7 @@
 # Go-FlexGet #
 
+[![Build Status](https://travis-ci.org/iMax-pp/go-flexget.svg?branch=master)](https://travis-ci.org/iMax-pp/go-flexget)
+
 [![wercker status](https://app.wercker.com/status/43149a32ca352251a19a7cbdfdaba20f/m "wercker status")](https://app.wercker.com/project/bykey/43149a32ca352251a19a7cbdfdaba20f)
 
 ## Introduction ##
